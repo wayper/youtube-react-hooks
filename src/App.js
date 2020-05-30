@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { Context } from './context';
 import TodoList from './TodoList'
 
 export default function App() {
@@ -28,7 +29,25 @@ export default function App() {
     }
   }
 
-    return (
+  const removeTodo = id => {
+    setTodos(todos.filter(todo => {
+      return todo.id !== id
+    }))
+  }
+
+  const toggleTodo = id => {
+    setTodos(todos.map(todo => {
+      if (todo.id === id) {
+        todo.completed = !todo.completed
+      }
+      return todo
+    }))
+  }
+
+  return (
+    <Context.Provider value={{
+      toggleTodo, removeTodo
+    }}>
       <div className="container">
         <h1>Todo app</h1>
 
@@ -44,5 +63,6 @@ export default function App() {
 
           <TodoList todos={todos} />
       </div>
-    );
+    </Context.Provider>
+  );
 }
